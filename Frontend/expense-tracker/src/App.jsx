@@ -1,21 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
 // Importing the background image from the local 'img' directory
-import bg from './img/bg.jpg'
+import bg from './img/bg.png'
 // Importing the MainLayout styled component
 import { MainLayout } from './styles/Layouts'
 //import the Orb component
 import Orb from './Components/Orb/Orb'
+import Navigation from './Components/Navigation/Navigation';
+
 // Define the App component
+
 function App() {
 
   return (
-    <AppStyled bg={bg} className='App'>
+    <AppStyled bg={bg} className="App">
+      <Orb/>
       <MainLayout>
-        <Orb/>
+        
+        <Navigation/>
       </MainLayout>
-   </AppStyled>
-  )
+    </AppStyled>
+  );
 
 }
 // Define a styled component named AppStyled
