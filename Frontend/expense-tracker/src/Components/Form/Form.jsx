@@ -4,8 +4,13 @@ import styled from 'styled-components'
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import { useGlobalContext } from "../../context/globalContext";
+
+
+// Functional component for the form to add income
 function Form() {
+     // Destructure addIncome function from the global context
     const { addIncome } = useGlobalContext()
+    // State to manage form input values
     const [inputState, setInputState] = useState({
         title: '',
         amount: '',
@@ -14,19 +19,25 @@ function Form() {
         description: ''
 
     })
-
+    // Destructure individual fields from inputState for convenience
     const { title, amount, date, category, description } = inputState;
+    // Function to handle input changes for text fields
+    // Used name as a parameter to change the input field based on the name given in the input field of the form
     const handleInput = name => e => {
-
+        // This creates a copy of the current state and updates the specific field.
         setInputState({...inputState, [name]: e.target.value})
     }
 
+    // Function to handle form submission
     const handleSubmit = e => {
+        // Prevent default form submission
         e.preventDefault()
-        addIncome(InputState)
+        // Call addIncome function from context with form data
+        addIncome(inputState)
     }
     
     return (
+        // The form data is passed to the handleSubmit function on submit
         <FormStyled onSubmit={handleSubmit}>
 
             <div className="input-control">
@@ -50,16 +61,14 @@ function Form() {
                 />
             </div>
             <div className="input-control">
-                
-                <DatePicker
-                    id="date"
-                    placeholder="Enter a Date"
+                <DatePicker 
+                    name='date'
+                    placeholderText='Enter A Date'
                     selected={date}
-                    dateFormat="dd/mm/yyyy"
+                    dateFormat="dd/MM/yyyy"
                     onChange={(date) => {
-                        selectInputState({...inputState, date: date})
+                        setInputState({...inputState, date: date})
                     }}
-                
                 />
             </div>
             <div className="selects input-control">

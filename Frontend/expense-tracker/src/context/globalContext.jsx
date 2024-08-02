@@ -25,6 +25,7 @@ export const GlobalProvider = ({ children }) => {
         
         try {
             const response = await axios.post(`${BASE_URL}add-income`, income);
+            console.log('Income added')
         } catch (error) {
             setError(error.response.data.message);
         }
@@ -32,7 +33,10 @@ export const GlobalProvider = ({ children }) => {
     
     return (
         // Provide the global state and functions to the children components
-        <GlobalContext.Provider value={'hello'}>
+        <GlobalContext.Provider value={{
+
+            addIncome
+        }}>
          
              {children}
         </GlobalContext.Provider>
