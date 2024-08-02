@@ -1,6 +1,7 @@
 import React from "react"
 import axios from 'axios'
 import { useState } from "react";
+import { useContext } from "react";
 
 // Base URL for the API created in the backend folder already.
 const BASE_URL = "http://localhost:5000/api/v1/";
@@ -30,12 +31,8 @@ export const GlobalProvider = ({ children }) => {
     }
     
     return (
-        
-        <GlobalContext.Provider value={{
-           addIncome,
-
-
-        }}>
+        // Provide the global state and functions to the children components
+        <GlobalContext.Provider value={'hello'}>
          
              {children}
         </GlobalContext.Provider>
@@ -44,4 +41,7 @@ export const GlobalProvider = ({ children }) => {
 
 }
 
+export const useGlobalContext = () => {
 
+    return useContext(GlobalContext)
+}

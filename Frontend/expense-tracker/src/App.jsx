@@ -12,6 +12,7 @@ import Income from './Components/Incomes/Incomes'
 import Expenses from './Components/Expenses/Expenses';
 //import Main from './styles/Main/Main'
 import { useState , useMemo} from 'react'
+import { useGlobalContext } from './context/globalContext'
 
 // Define the App component
 
@@ -19,7 +20,8 @@ function App() {
 
   // State to track which menu item is active
   const [active, setActive] = useState(1)
-
+  const global = useGlobalContext()
+ console.log(global)
 
   const displayData = () => {
     switch(active){
