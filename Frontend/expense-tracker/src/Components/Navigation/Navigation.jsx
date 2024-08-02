@@ -5,7 +5,9 @@ import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
 
 // Navigation component definition
-function Navigation() {
+// Takes the active and setactive  as props
+function Navigation({ active, setActive }) {
+    
     return (
         <NavStyled>
             {/* User information section */}
@@ -19,8 +21,14 @@ function Navigation() {
 
             <ul className="menu-items">
                 {/* Iterate over menuItems array and render each item */}
+                 {/*Sets the active item when clicked. */}
                 {menuItems.map((item) => (
-                    <li key={item.id}>
+                    <li key={item.id}
+                       
+                        onClick={() => setActive(item.id)}
+                        className={active === item.id ? 'active': ''}
+                    >
+                       
                         {/* Display the icon of the menu item */}
                         {item.icon}
                         {/* Display the title of the menu item */}
@@ -109,6 +117,23 @@ const NavStyled = styled.nav`
             font-size: 1.4rem; /* Font size for the icons */
             transition: all .4s ease-in-out; /* Smooth transition for all properties */
         }
+    }
+    .active{
+        color: rgba(34, 34, 96, 1) !important;
+       i{
+        color: rgba(34, 34, 96, 1); 
+
+       } 
+       &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;  
+            height: 100%;
+            background: #222260;     
+            border-radius: 0 10px 10px 0;            
+       }
     }
 `;
 
