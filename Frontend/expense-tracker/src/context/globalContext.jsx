@@ -29,13 +29,35 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             setError(error.response.data.message);
         }
+     }
+    // Function to getincomes by making a get request to the server
+    const getIncomes = async () => {
+         
+        try { 
+
+            // The URL is constructed using the BASE_URL constant and the 'get-incomes' endpoint.
+            const response = await axios.get(`${BASE_URL}get-incomes`)
+            // If the request is successful, store the received data in the 'incomes' state variable.
+            setIncomes(response.data)
+            console.log(response.data)
+        } catch (error) {
+            // If there's an error with the request, catch it and store the error message
+           // in the 'error' state variable. This will help to display the error message to the user.
+            setError(error.respose.data.message);
+            
+        }
+        
     }
     
+    
+
     return (
         // Provide the global state and functions to the children components
         <GlobalContext.Provider value={{
 
-            addIncome
+            addIncome,
+            getIncomes,
+            incomes
         }}>
          
              {children}
