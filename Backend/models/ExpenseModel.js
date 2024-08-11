@@ -21,7 +21,7 @@ const ExpenseSchema = new mongoose.Schema({
     // Type of income, defaulting to "Income"
     type: {
         type: String, // Data type is String
-        default: "Income", // Default value is "Income"
+        default: "Expense", // Default value is "Income"
        
     },
 

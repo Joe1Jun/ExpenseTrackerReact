@@ -1,5 +1,5 @@
 // Importing icons from the '../utils/Icons' module
-import { dashboard, expenses, transactions, trend } from '../utils/Icons'
+import { dashboard, expenses, transactions, trend } from './Icons'
 // Defining an array of menu items with their properties
 
 export const menuItems = [
