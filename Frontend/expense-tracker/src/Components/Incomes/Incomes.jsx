@@ -6,16 +6,18 @@ import Form from '../Form/Form';
 import IncomeItem from "../IncomeItem/IncomeItem";
 
 function Income() {
-    const { addIncome, incomes, getIncomes, deleteIncome } = useGlobalContext();
+    const { addIncome, incomes, getIncomes, deleteIncome, totalIncome } = useGlobalContext();
 
     useEffect(() => {
         getIncomes(); // Correct function call
-    }, [incomes]);
+        //The effect will run every time the incomes array changes. So if incomes is  added or modified , incomes will be updated, triggering getIncomes to fetch the latest data.
+    }, []);
 
     return (
         <IncomeStyled>
             <InnerLayout>
                 <h1>Incomes</h1>
+                <h2 className="total-income">Total Income: <span> ${totalIncome()}</span></h2>
                 <div className="income-content">
                     <div className="form-container">
                         <Form />
@@ -49,6 +51,30 @@ const IncomeStyled = styled.div`
 
     display: flex;
     overflow: auto;
+   
+    .total-income{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #FCF6F9;
+        border: 2px solid #FFFFFF;
+        box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
+
+        border-radius: 20px;
+        padding: 1rem;
+       
+        margin: 1rem 0;
+        font-size: 2rem;
+        gap: .5rem;
+        
+        span{
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--color-green);
+    }
+        
+    
+    }
 
    .income-content{
        display: flex;
@@ -58,6 +84,7 @@ const IncomeStyled = styled.div`
        }
    }
 
+   
 
 `;
 

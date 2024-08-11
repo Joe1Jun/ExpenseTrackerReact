@@ -18,6 +18,10 @@ export const GlobalStyle = createGlobalStyle`
     --color-delete: #FF0000;
   }
 
+  h1, h2, h3, h4, h5, h6{
+        color: var(--primary-color);
+    }
+
   body {
     font-family: 'Nunito', sans-serif;
     

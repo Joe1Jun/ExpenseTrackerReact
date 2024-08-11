@@ -1,14 +1,13 @@
-import React from "react"
-import axios from 'axios'
-import { useState } from "react";
-import { useContext } from "react";
+import React, { createContext, useState, useContext } from 'react';
+import axios from 'axios';
+
 
 // Base URL for the API created in the backend folder already.
 const BASE_URL = "http://localhost:5000/api/v1/";
 
 // Create a context object using React.createContext()
 // This will be used to provide and consume global state in the application
-const GlobalContext = React.createContext()
+const GlobalContext = createContext()
 
 // GlobalProvider component that wraps around the children components to provide them with global state and functions
 export const GlobalProvider = ({ children }) => {
@@ -29,6 +28,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             setError(error.response.data.message);
         }
+         getIncomes()
      }
     // Function to getincomes by making a get request to the server
     const getIncomes = async () => {
@@ -53,10 +53,19 @@ export const GlobalProvider = ({ children }) => {
         
         const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
 
-
+        getIncomes()
     }
     
+    const totalIncome = () => {
+        
+        let totalIncome = 0
+        incomes.forEach((income) => {
+           totalIncome += income.amount
+        })
+        return totalIncome
+    }
     
+    console.log("total:" + totalIncome());
 
     return (
         // Provide the global state and functions to the children components
@@ -65,7 +74,8 @@ export const GlobalProvider = ({ children }) => {
             addIncome,
             getIncomes,
             incomes,
-            deleteIncome
+            deleteIncome,
+            totalIncome
         }}>
          
              {children}

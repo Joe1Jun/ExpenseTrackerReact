@@ -36,7 +36,17 @@ function Form() {
         e.preventDefault()
         // Call addIncome function from context with form data
         addIncome(inputState)
-        getIncomes();
+        //reset input state  of form to be empty after item is added
+        setInputState({
+            title: '',
+            amount: '',
+            date: '',
+            category: '',
+            description: ''
+
+
+        })
+       
     }
     
     return (
