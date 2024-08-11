@@ -11,7 +11,7 @@ import {plus} from "../../utils/Icons/"
 // Functional component for the form to add income
 function Form() {
      // Destructure addIncome function from the global context
-    const { addIncome } = useGlobalContext()
+    const { addIncome, getIncomes } = useGlobalContext()
     // State to manage form input values
     const [inputState, setInputState] = useState({
         title: '',
@@ -36,6 +36,7 @@ function Form() {
         e.preventDefault()
         // Call addIncome function from context with form data
         addIncome(inputState)
+        getIncomes();
     }
     
     return (
@@ -78,7 +79,7 @@ function Form() {
                     <option value=""  disabled >Select Option</option>
                     <option value="salary">Salary</option>
                     <option value="freelancing">Freelancing</option>
-                    <option value="investments">Investiments</option>
+                    <option value="investments">Investments</option>
                     <option value="stocks">Stocks</option>
                     <option value="bitcoin">Bitcoin</option>
                     <option value="bank">Bank Transfer</option>  

@@ -48,6 +48,13 @@ export const GlobalProvider = ({ children }) => {
         }
         
     }
+
+    const deleteIncome = async (id) => {
+        
+        const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
+
+
+    }
     
     
 
@@ -57,7 +64,8 @@ export const GlobalProvider = ({ children }) => {
 
             addIncome,
             getIncomes,
-            incomes
+            incomes,
+            deleteIncome
         }}>
          
              {children}
