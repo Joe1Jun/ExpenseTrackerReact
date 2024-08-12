@@ -36,14 +36,18 @@ function IncomeItem({
             case 'other':
                 return piggy;
             default:
-                return '';
+                console.warn(`No icon found for category: ${category}`);
+                return ''; // Optional: return a default icon if none is found
+               
 
 
         }
     }
 
     const expenseCatIcon = () => {
-        switch (category) {
+        const normalizedCategory = category.trim().toLowerCase(); 
+        console.log(`Expense Category: "${category}"`);
+        switch (normalizedCategory) {
             case 'education':
                 return book;
             case 'groceries':
@@ -61,7 +65,8 @@ function IncomeItem({
             case 'other':
                 return circle;
             default:
-                return ''
+                console.warn(`No icon found for category: ${category}`);
+                return ''; // Optional: return a default icon if none is found
         }
     }
     
