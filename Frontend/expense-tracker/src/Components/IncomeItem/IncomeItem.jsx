@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components'
+import { dateFormat } from "../../utils/dateFormat";
 import {bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt} from '../../utils/Icons'
 import Button from "../Button/Button";
 
@@ -16,73 +17,74 @@ function IncomeItem({
 
 }) {
 
-    const categoryIcon = () => {
-        
-        switch (category) {
-            case 'salary':
-                return money;
-            case 'freelancing':
-                return freelance;
-            case 'investments':
-                return stocks;
-            case 'stocks':
-                return users;
-            case 'bitcoin':
-                return bitcoin;
-            case 'bank':
-                return card;
-            case 'youtube':
-                return yt;
-            case 'other':
-                return piggy;
-            default:
-                console.warn(`No icon found for category: ${category}`);
-                return ''; // Optional: return a default icon if none is found
-               
 
-
-        }
-    }
-
-    const expenseCatIcon = () => {
-        const normalizedCategory = category.trim().toLowerCase(); 
-        console.log(`Expense Category: "${category}"`);
-        switch (normalizedCategory) {
+    const normalizedCategory = category.trim().toLowerCase();
+    const getIcon = () => {
+        if (type === 'Expense') {
+          // Handle expense categories
+          switch (normalizedCategory) {
             case 'education':
-                return book;
+              return book;
             case 'groceries':
-                return food;
+              return food;
             case 'health':
-                return medical;
+              return medical;
             case 'subscriptions':
-                return tv;
+              return tv;
             case 'takeaways':
-                return takeaway;
+              return takeaway;
             case 'clothing':
-                return clothing;
+              return clothing;
             case 'travelling':
-                return freelance;
+              return freelance;
             case 'other':
-                return circle;
+              return circle;
             default:
-                console.warn(`No icon found for category: ${category}`);
-                return ''; // Optional: return a default icon if none is found
+              console.warn(`No icon found for expense category: ${category}`);
+              return null;
+          }
+        } else {
+          // Handle income categories
+          switch (normalizedCategory) {
+            case 'salary':
+              return money;
+            case 'freelancing':
+              return freelance;
+            case 'investments':
+              return stocks;
+            case 'stocks':
+              return users;
+            case 'bitcoin':
+              return bitcoin;
+            case 'bank':
+              return card;
+            case 'youtube':
+              return yt;
+            case 'other':
+              return piggy;
+            default:
+              console.warn(`No icon found for income category: ${category}`);
+              return null;
+          }
         }
-    }
+      };
+    
+    console.log('Type:', type);
+    console.log('Category:', category);    
     
     return (
     
         <IncomeItemStyled indicator={indicatorColor}>
             
             <div className="icons">
-                 {type === 'expense' ? expenseCatIcon() : categoryIcon()}
+                 {getIcon()}
             </div>
             <div className="content">
                 <h5>{title}</h5>
                 <div className="inner-content">
                     <div className="text">
                         <p>{dollar} {amount}</p>
-                        <p>{calender} {date}</p>
+                        <p>{calender} {dateFormat(date)}</p>
                         <p>
                             {comment}
                             {description}
@@ -128,7 +130,7 @@ gap: 1rem;
 width: 100%;
 color: #222260;
 
-.icon{
+.icons{
     width: 80px;
         height: 80px;
         border-radius: 20px;
