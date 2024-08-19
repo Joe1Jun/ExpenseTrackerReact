@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
     Chart as ChartJs,
     CategoryScale,
@@ -10,12 +10,10 @@ import {
     Legend,
     ArcElement,
 } from 'chart.js'
-
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { useGlobalContext } from '../../context/globalContext'
 import { dateFormat } from '../../utils/dateFormat'
-
 
 ChartJs.register(
     CategoryScale,
@@ -27,41 +25,41 @@ ChartJs.register(
     Legend,
     ArcElement,
 )
-   
+
 function Chart() {
-    const {incomes, expenses} = useGlobalContext()
+    const { incomes, expenses } = useGlobalContext()
+
+    // Combine all transactions and sort by date
+    const allTransactions = [...incomes, ...expenses].sort((a, b) => new Date(a.date) - new Date(b.date))
+
+    // Create an array of unique, sorted dates
+    const labels = [...new Set(allTransactions.map(transaction => dateFormat(transaction.date)))]
 
     const data = {
-        labels: incomes.map((inc) =>{
-            const {date} = inc
-            return dateFormat(date)
-        }),
+        labels,
         datasets: [
             {
                 label: 'Income',
-                data: [
-                    ...incomes.map((income) => {
-                        const {amount} = income
-                        return amount
-                    })
-                ],
+                data: labels.map(date => {
+                    const income = incomes.find(inc => dateFormat(inc.date) === date)
+                    return income ? income.amount : 0
+                }),
                 backgroundColor: 'green',
-                tension: .2
+                borderColor: 'green',
+                tension: 0.2
             },
             {
                 label: 'Expenses',
-                data: [
-                    ...expenses.map((expense) => {
-                        const {amount} = expense
-                        return amount
-                    })
-                ],
+                data: labels.map(date => {
+                    const expense = expenses.find(exp => dateFormat(exp.date) === date)
+                    return expense ? expense.amount : 0
+                }),
                 backgroundColor: 'red',
-                tension: .2
+                borderColor: 'red',
+                tension: 0.2
             }
         ]
     }
-
 
     return (
         <ChartStyled >
@@ -76,9 +74,7 @@ const ChartStyled = styled.div`
     box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.06);
     padding: 1rem;
     border-radius: 20px;
-    width: 900px;
     height: 100%;
 `;
-
 
 export default Chart
