@@ -1,59 +1,84 @@
-/// Import the necessary modules
+// controllers/authController.js
 
-const { User } = require ('../models/user')
-const bcrypt = require('bcrypt'); // Import bcrypt for hashing passwords
-const { verifyToken } = require('../middleware/verifyToken'); // Import validation functions from a utility file
+const { User } = require('../models/UsersModel');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Define a POST route handler for user registration
-exports.register('/register', async (req, res) => {
-    try {
-        // Destructuring the 'name', 'email', 'password', and 'passwordConfirm' fields from the request body ie. the registration.ejs page
-        const { name, email, password } = req.body;
-        if (error) {
-            return res.status(400).send({ message: error.details[0].message });
-        }
-        const user = await User.findOne({ email: req.body.email });
-        if (user) {
-            return res.status(409).send({ message: "User already exists" });
-        }
+exports.registerUser = async (req, res) => {
+  try {
+    // Destructure the necessary fields from the request body
+    const { name, email, password, passwordConfirm } = req.body;
 
-        const salt = await bcrypt.genSalt(Number(process.env.SALT));
-        const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-        await new User({ ...req.body, password: hashPassword }).save();
-        res.status(201).send({ message: "User created successfully" });
-    } catch (error) {
-        console.log(error); // Log the error to the console
-        res.status(500).send({ message: "Internal server error" });
+    // Validate if passwords match
+    if (password !== passwordConfirm) {
+      return res.status(400).send({ message: 'Passwords do not match' });
     }
-});
-        //Find user
 
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).send({ message: 'User already exists' });
+    }
+
+    // Hash the user's password
+    const salt = await bcrypt.genSalt(Number(process.env.SALT));
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create and save the new user
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword
+    });
+    await newUser.save();
+
+    // Respond with success
+    res.status(201).send({ message: 'User created successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+};
+
+exports.loginUser = async (req, res) => {
+    try {
+        
+        const { email, password } = req.body
+    
+        // validate input
+        if (!email || !password) {
+            return res.status(400).send({ message: 'Please provide an email or password' });
+        }
+        //check if user exists
+        const user = await User.findOne({ email });
+        if (!user || !(await bcrypt.compare(password, user.password))){
+            return res.status(400).send({message: 'Email or password incorrect'})
+        }
+        
+        res.cookie('jwt', token, {
+            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+            httpOnly : true
+        })
+    
+        res.status(200).send({ message: 'Logged in Successfully' })
         
 
-        const user = new UserSchema({
-            name,
-            email,
-            password
-        });
-    } catch (error) {
+    } catch(error) {
         
+        console.error(error);
+        res.status(500).send({ message: 'Internal server error' });
     }
    
-});
-
-exports.login('/login', async(req, res) => {
-    
 
 
-})
 
-exports.deleteAccount('/delete', async(req, res) => {
-     
+}
+
+        
+
+        
 
 
-})
 
 
-// Export the router for use in other parts of the application
-module.exports = router;
