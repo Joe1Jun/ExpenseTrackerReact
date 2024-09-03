@@ -11,6 +11,9 @@ const GlobalContext = createContext()
 
 // GlobalProvider component that wraps around the children components to provide them with global state and functions
 export const GlobalProvider = ({ children }) => {
+
+    
+    
     
      // State to store incomes
     const [incomes, setIncomes] = useState([])
@@ -19,6 +22,17 @@ export const GlobalProvider = ({ children }) => {
     // State to store errors
     const [error, setError] = useState([])
     
+
+     const addUser = async (user) => {
+        
+        try {
+            const response = await axios.post(`${BASE_URL}register`, user);
+            console.log('User added')
+        } catch (error) {
+            setError(error.response.data.message);
+        }
+         
+     }
      // Function to add income by making a POST request to the server
      const addIncome = async (income) => {
         

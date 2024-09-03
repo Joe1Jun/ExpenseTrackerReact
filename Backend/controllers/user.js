@@ -55,15 +55,19 @@ exports.loginUser = async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))){
             return res.status(400).send({message: 'Email or password incorrect'})
         }
-        //Define token and call method from UsersModel.
+        //Define token and call method from UsersModel to generate the token.
         const token = user.generateAuthToken();
-        console.log("Token is " +  token );
+        console.log("Token is " + token);
+        console.log("User logged in successfully")
+        // Set a cookie named 'jwt' with the generated token
         res.cookie('jwt', token, {
+            // Set the expiration time for the cookie
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-            httpOnly : true
+            // Ensure the cookie is only accessible via HTTP(S), and not by client-side JavaScript
+            httpOnly: true
         })
     
-        res.status(200).send({ message: 'Logged in Successfully' })
+        res.status(200).send({ data: token, message: "Logged in successfully" });
         
 
     } catch(error) {
@@ -72,6 +76,39 @@ exports.loginUser = async (req, res) => {
         res.status(500).send({ message: 'Internal server error' });
     }
    
+
+
+
+}
+
+
+exports.logout = async (req, res) => {
+    try {
+    
+        res.cookie('jwt', 'logout', {
+            expires: new Date(Date.now() + 2 * 1000),
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict'
+        })
+    
+        logger.info("User logged out ")
+    
+        res.status(200).redirect('/')
+    
+    
+    } catch (error) {
+        
+        logger.error("Internal server error")
+        res.status(500).send("An error occurred while logging out.")
+    }
+    
+}
+
+exports.deleteAccount = async (req, res) => {
+
+
+
 
 
 

@@ -4,7 +4,7 @@ const { addExpense, getExpense, deleteExpense } = require('../controllers/expens
 //import methods from controller
 const { addIncome, getIncomes, deleteIncome } = require('../controllers/income')
 //const verifyToken = require('../middleware/verifyToken')
-const { registerUser, loginUser} = require('../controllers/user')
+const { registerUser, loginUser, logout} = require('../controllers/user')
 
 //chain all routes that access the IncomeSchema for better readibility
 router  
@@ -18,8 +18,8 @@ router
       .delete('/delete-expense/:id', deleteExpense)      
 router
       .post('/register', registerUser)
-       .post('/login', loginUser)
-      // .delete('/delete-account/:id')
+      .post('/login', loginUser)
+      .post('/logout', logout )
 
 
 module.exports = router
