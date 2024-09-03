@@ -2,7 +2,9 @@
 const router = require('express').Router()
 const { addExpense, getExpense, deleteExpense } = require('../controllers/expense')
 //import methods from controller
-const{ addIncome, getIncomes, deleteIncome } = require('../controllers/income')
+const { addIncome, getIncomes, deleteIncome } = require('../controllers/income')
+const verifyToken = require('../middleware/verifyToken')
+const { register, login, deleteAccount} = 
 
 //chain all routes that access the IncomeSchema for better readibility
 router  
@@ -14,5 +16,8 @@ router
       .post('/add-expense', addExpense)
       .get('/get-expenses', getExpense)
       .delete('/delete-expense/:id', deleteExpense)      
+router
+      .post('/register', register)
+
 
 module.exports = router
