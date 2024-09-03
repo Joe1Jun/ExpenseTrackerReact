@@ -55,7 +55,9 @@ exports.loginUser = async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))){
             return res.status(400).send({message: 'Email or password incorrect'})
         }
-        
+        //Define token and call method from UsersModel.
+        const token = user.generateAuthToken();
+        console.log("Token is " +  token );
         res.cookie('jwt', token, {
             expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
             httpOnly : true
