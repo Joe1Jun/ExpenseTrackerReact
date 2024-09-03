@@ -1,7 +1,8 @@
 // import mongoose
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken'); // Import jsonwebtoken for generating authentication token
 // Define the schema for the user document in mongo atlas.
-constUserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
        
     name: {
        
@@ -28,11 +29,20 @@ constUserSchema = new mongoose.Schema({
 
     }
 
-
-
-
-
-
-
-
 })
+
+// Define a method on the schema to generate an authentication token
+UserSchema.methods.generateAuthToken = function () {
+    // Create a JWT token with user id and secret key from environment variables
+    const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN // Set token expiration from environment variable
+    });
+    return token;
+};
+
+
+const User = mongoose.model('User', UserSchema)
+
+module.exports = { User };
+
+
