@@ -53,7 +53,7 @@ function App() {
 
   return (
    <AppStyled>
-      <Orb />
+      
       <Router>
         <Routes>
           <Route path="/login" element={<HomePage />} />

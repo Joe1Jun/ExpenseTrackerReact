@@ -43,6 +43,13 @@ const ExpenseSchema = new mongoose.Schema({
         maxLength: 50, // Maximum length of the string is 50 characters
         trim: true // Trim whitespace from both ends of the string
     },
+
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
+    
 // Adding timestamps to the schema, which will automatically add createdAt and updatedAt fields
 
 }, { timestamps: true })

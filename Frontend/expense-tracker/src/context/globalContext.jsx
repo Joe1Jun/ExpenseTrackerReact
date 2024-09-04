@@ -107,20 +107,27 @@ export const GlobalProvider = ({ children }) => {
         return totalIncome
     }
 
-   //calculate incomes
-   const addExpense = async (expense) => {
-    const response = await axios.post(`${BASE_URL}add-expense`, expense)
-        .catch((err) =>{
-            setError(err.response.data.message)
-        })
-    getExpenses()
-}
+    const addExpense = async (expense) => {
+        try {
+            const response = await axios.post(`${BASE_URL}add-expense`, expense, { withCredentials: true });
+            console.log('Expense added:', response.data);
+            await getExpenses(); // Refresh the expenses after adding
+        } catch (error) {
+            console.error('Error adding expense:', error);
+            setError(error.response?.data?.message || 'Error adding expense');
+        }
+    };
 
-const getExpenses = async () => {
-    const response = await axios.get(`${BASE_URL}get-expenses`)
-    setExpenses(response.data)
-    console.log(response.data)
-}
+    const getExpenses = async () => {
+        try {
+            const response = await axios.get(`${BASE_URL}get-expenses`, { withCredentials: true });
+            setExpenses(response.data);
+            console.log('Expenses fetched:', response.data);
+        } catch (error) {
+            console.error('Error fetching expenses:', error);
+            setError(error.response?.data?.message || 'Error fetching expenses');
+        }
+    };
 
 const deleteExpense = async (id) => {
     const res  = await axios.delete(`${BASE_URL}delete-expense/${id}`)

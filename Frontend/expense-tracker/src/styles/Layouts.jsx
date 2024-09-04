@@ -72,7 +72,7 @@ export const InputControl = styled.div`
 
 // Style for buttons
 export const Button = styled.button`
-  background-color: #007bff;
+  background-color: #2e7fdc;
   color: white;
   padding: 0.75rem;
   border: none;

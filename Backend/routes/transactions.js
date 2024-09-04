@@ -5,17 +5,18 @@ const { addExpense, getExpense, deleteExpense } = require('../controllers/expens
 const { addIncome, getIncomes, deleteIncome } = require('../controllers/income')
 //const verifyToken = require('../middleware/verifyToken')
 const { registerUser, loginUser, logout} = require('../controllers/user')
+const verifyToken = require('../middleware/verifyToken')
 
 //chain all routes that access the IncomeSchema for better readibility
 router  
-      .post('/add-income', addIncome)
-      .get('/get-incomes', getIncomes)
+      .post('/add-income',verifyToken, addIncome)
+      .get('/get-incomes',verifyToken, getIncomes)
       // id in the path is a route parameter, which allows the route to accept any ID value.
-      .delete('/delete-income/:id', deleteIncome)
+      .delete('/delete-income/:id',verifyToken, deleteIncome)
 router
-      .post('/add-expense', addExpense)
-      .get('/get-expenses', getExpense)
-      .delete('/delete-expense/:id', deleteExpense)      
+      .post('/add-expense', verifyToken, addExpense)
+      .get('/get-expenses',verifyToken, getExpense)
+      .delete('/delete-expense/:id',verifyToken, deleteExpense)      
 router
       .post('/register', registerUser)
       .post('/login', loginUser)

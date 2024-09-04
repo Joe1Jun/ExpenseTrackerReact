@@ -22,7 +22,8 @@ exports.addExpense = async (req, res) => {
         amount,
         category,
         description,
-        date
+        date,
+        user: req.user._id // Set the user_id from the authenticated user
     });
 
     try {
@@ -41,7 +42,7 @@ exports.addExpense = async (req, res) => {
 // Function to get incomes
 exports.getExpense = async (req, res) => {
     
-
+    const user_id = req.user.id; // Get the user ID from the token
     try {
     // Set the sort order to -1 (descending)
     // -1 with mongoDB sorts in descending order . 1  sorts in ascending order.    
@@ -50,9 +51,9 @@ exports.getExpense = async (req, res) => {
         // CreatedAt field using the date to sort the results in descending order
         // The sort method uses different sorting algorithms depending on type of data and environment in which it operates.
         // equivalent in mySql SELECT * FROM users ORDER BY createdAt DESC;
-        const incomes = await ExpenseSchema.find().sort({createdAt: sortOrder})
+        const expenses = await ExpenseSchema.find({ user: req.user._id }).sort({createdAt: sortOrder})
         // Send the retrieved income entries as a JSON response with a 200 status code
-        res.status(200).json(incomes)
+        res.status(200).json(expenses)
 
     } catch (error) {
         // If an error occurs, send a server error response with a 500 status code
@@ -64,11 +65,12 @@ exports.getExpense = async (req, res) => {
 exports.deleteExpense = async (req, res) => {
     // Extracting the id parameter from the request
     const { id } = req.params;
+    const user_id = req.user.id; // Get the user ID from the token
     try {
         // Find the document by ID and delete it
-        const income = await ExpenseSchema.findByIdAndDelete(id);
+        const expense = await ExpenseSchema.findOneAndDelete({ _id: id, user_id });
         // If income is found its deleletd
-        if (income) {
+        if (expense) {
             res.status(200).json({ message: `Expense with ID ${id} deleted` });
         } else {
             // If not found message with an error is outputted
