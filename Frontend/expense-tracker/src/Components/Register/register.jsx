@@ -1,7 +1,8 @@
-// src/Components/Register/register.jsx
+// src/Components/Register/Register.jsx
 import React, { useState } from 'react';
 import { useGlobalContext } from "../../context/globalContext";
-
+import { useNavigate } from 'react-router-dom';
+import { FormContainer, InputControl, Button, Error } from '../../styles/Layouts';
 function Register() {
   const [formData, setFormData] = useState({
     name: '',
@@ -9,8 +10,12 @@ function Register() {
     password: '',
     passwordConfirm: '',
   });
-
-    const { addUser } = useGlobalContext();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  
+  const { addUser } = useGlobalContext();
+  
   const { name, email, password, passwordConfirm } = formData;
 
   const handleChange = (e) => {
@@ -18,48 +23,76 @@ function Register() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add form submission logic here
-    addUser(formData)
-    //reset input state  of form to be empty after item is added
-    setFormData({
-    name: '',
-    email: '',
-    password: '',
-    passwordConfirm: '',
+    setLoading(true);
+    
+    if (password !== passwordConfirm) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
 
-
-    })
+    try {
+      await addUser(formData);
+      // Optionally handle post-registration behavior here, e.g., redirecting
+      navigate('/dashboard'); // Navigate to the dashboard after successful login
+    } catch (err) {
+      setError(err.message || 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <FormContainer>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" name="name" value={name} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input type="email" name="email" value={email} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input type="password" name="password" value={password} onChange={handleChange} />
-        </label>
-        <br />
-        <label>
-          Confirm Password:
-          <input type="password" name="passwordConfirm" value={passwordConfirm} onChange={handleChange} />
-        </label>
-        <br />
-        <button type="submit">Register</button>
+        <InputControl>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={name}
+            onChange={handleChange}
+            required
+          />
+        </InputControl>
+        <InputControl>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={handleChange}
+            required
+          />
+        </InputControl>
+        <InputControl>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={handleChange}
+            required
+          />
+        </InputControl>
+        <InputControl>
+          <input
+            type="password"
+            name="passwordConfirm"
+            placeholder="Confirm Password"
+            value={passwordConfirm}
+            onChange={handleChange}
+            required
+          />
+        </InputControl>
+        {error && <Error>{error}</Error>}
+        <Button type="submit" disabled={loading}>
+          {loading ? 'Registering...' : 'Register'}
+        </Button>
       </form>
-    </div>
+    </FormContainer>
   );
 }
 

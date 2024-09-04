@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
 
     }
 
-})
+}, { timestamps: true })
 
 // Define a method on the schema to generate an authentication token
 UserSchema.methods.generateAuthToken = function () {

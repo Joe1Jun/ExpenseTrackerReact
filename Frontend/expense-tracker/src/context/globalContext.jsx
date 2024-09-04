@@ -14,6 +14,9 @@ export const GlobalProvider = ({ children }) => {
 
     
     
+    const [user, setUser] = useState();
+        
+
     
      // State to store incomes
     const [incomes, setIncomes] = useState([])
@@ -23,28 +26,41 @@ export const GlobalProvider = ({ children }) => {
     const [error, setError] = useState([])
     
 
-     const addUser = async (user) => {
-        
+    const addUser = async (user) => {
         try {
-            const response = await axios.post(`${BASE_URL}register`, user);
-            console.log('User added')
+          const response = await axios.post(`${BASE_URL}register`, user);
+          console.log('User added:', response.data);
+          // Handle successful registration if needed
         } catch (error) {
-            setError(error.response.data.message);
+          console.error('Error adding user:', error.response ? error.response.data.message : error.message);
+          throw new Error(error.response ? error.response.data.message : 'Registration failed');
         }
-         
-     }
+      };
+      
      const loginUser = async (user) => {
-        
         try {
-            const response = await axios.post(`${BASE_URL}login`, user);
-            console.log('User logged in')
+            const response = await axios.post(`${BASE_URL}login`, user, { withCredentials: true });
+            // Update user state only after successful login
+            setUser(response.data.user);
+            console.log('User logged in');
         } catch (error) {
             console.error('Login error:', error.response ? error.response.data.message : error.message);
             setError(error.response.data.message);
-            console.log(error)
         }
-         
-     }
+    }
+    
+    
+     const logoutUser = async () => {
+        try {
+            await axios.post(`${BASE_URL}logout`, {}, { withCredentials: true });
+            // Clear the user state
+            setUser(null);
+            console.log('User logged out');
+        } catch (err) {
+            setError(err.response?.data?.message || 'An error occurred');
+        }
+    }
+    
      // Function to add income by making a POST request to the server
      const addIncome = async (income) => {
         
@@ -126,8 +142,10 @@ const totalExpenses = () => {
     return (
         // Provide the global state and functions to the children components
         <GlobalContext.Provider value={{
+            user,
             addUser,
             loginUser,
+            logoutUser,
             addIncome,
             getIncomes,
             incomes,

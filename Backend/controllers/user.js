@@ -43,68 +43,77 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-    try {
-        
-        const { email, password } = req.body
-    
-        // validate input
-        if (!email || !password) {
-            return res.status(400).send({ message: 'Please provide an email or password' });
-        }
-        //check if user exists
-        const user = await User.findOne({ email });
-        if (!user || !(await bcrypt.compare(password, user.password))){
-            return res.status(400).send({message: 'Email or password incorrect'})
-        }
-        //Define token and call method from UsersModel to generate the token.
-        const token = user.generateAuthToken();
-        console.log("Token is " + token);
-        console.log("User logged in successfully")
-        // Set a cookie named 'jwt' with the generated token
-        res.cookie('jwt', token, {
-            // Set the expiration time for the cookie
-            expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
-            // Ensure the cookie is only accessible via HTTP(S), and not by client-side JavaScript
-            httpOnly: true
-        })
-    
-        res.status(200).send({ data: token, message: "Logged in successfully" });
-        
+  try {
+      const { email, password } = req.body;
 
-    } catch(error) {
-        
-        console.error(error);
-        res.status(500).send({ message: 'Internal server error' });
-    }
-   
+      if (!email || !password) {
+          return res.status(400).send({ message: 'Please provide an email and password' });
+      }
+
+      const user = await User.findOne({ email });
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+          return res.status(400).send({ message: 'Email or password incorrect' });
+      }
+
+      const token = user.generateAuthToken();
+      console.log("Token is " + token);
+      console.log("User logged in successfully");
+
+      // Set the cookie
+      // Set the cookie with proper options
+   await   res.cookie('jwt', token, {
+              expires: new Date(Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRES) * 24 * 60 * 60 * 1000), // Convert days to milliseconds
+              httpOnly: true,
+              secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
+              sameSite: 'lax', // Adjust based on your needs
+              path: '/' // Ensure this is the correct path
+});
+
+      console.log("Cookies after login: ", req.cookies);
+
+      res.status(200).json({
+          data: token,
+          user: {
+              name: user.name,
+              email: user.email
+          },
+          message: "Logged in successfully"
+      });
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal server error' });
+  }
+};
 
 
+      
 
-}
 
 
 exports.logout = async (req, res) => {
-    try {
-    
-        res.cookie('jwt', 'logout', {
-            expires: new Date(Date.now() + 2 * 1000),
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict'
-        })
-    
-        logger.info("User logged out ")
-    
-        res.status(200).redirect('/')
-    
-    
-    } catch (error) {
-        
-        logger.error("Internal server error")
-        res.status(500).send("An error occurred while logging out.")
-    }
-    
-}
+  console.log("Cookies before logout:", req.cookies);
+  try {
+      // Clear the cookie by setting its expiration date to a past date
+res.cookie('jwt', '', {
+  expires: new Date(Date.now() - 1000), // Set to a past date to delete it
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production', // Match the same setting as when setting the cookie
+  sameSite: 'lax', // Match the same setting as when setting the cookie
+  path: '/' // Ensure this matches the path used when the cookie was set
+});
+
+      console.log("Cookies after logout:", req.cookies);
+      console.log("User logged out");
+      
+      // Send a JSON response indicating success
+      res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+      console.error("Internal server error:", error);
+      res.status(500).json({ message: 'An error occurred while logging out.' });
+  }
+ 
+};
 
 exports.deleteAccount = async (req, res) => {
 

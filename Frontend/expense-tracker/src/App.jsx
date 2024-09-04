@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { BrowserRouter as Router , Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Register from './Components/Register/register';
-
+import Login from './Components/Login/Login';
 // Importing the background image from the local 'img' directory
 import bg from './img/bg.png'
 // Importing the MainLayout styled component
@@ -23,8 +23,10 @@ import { useGlobalContext } from './context/globalContext'
 function App() {
 
   // State to track which menu item is active
+  const { user } = useGlobalContext();
   const [active, setActive] = useState(1)
   const global = useGlobalContext()
+
  console.log(global)
 
   const displayData = () => {
@@ -49,12 +51,29 @@ function App() {
   }, [])
 
 
-return (
-  <div>
-    <HomePage />
-  </div>
-);
-}
+  return (
+   <AppStyled>
+      <Orb />
+      <Router>
+        <Routes>
+          <Route path="/login" element={<HomePage />} />
+          <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={user ? <MainLayout>
+        <Navigation active={active} setActive={setActive} />
+        <main>
+          {displayData()}
+        </main>
+      </MainLayout>  : <Navigate to="/login" />} />
+        
+          <Route path="/" element={<Navigate to="/login" />} />
+        </Routes>
+      </Router>
+
+
+   </AppStyled>
+      
+    );
+  }
 
     
 

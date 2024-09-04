@@ -29,14 +29,17 @@ const HomePageStyled = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f0f0f0;
+  background: linear-gradient(to right, #f7f7f7, #e2e2e2);
+  font-family: 'Arial', sans-serif;
 
   .form-container {
-    background: white;
+    background: #fff;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    transition: transform 0.3s ease-in-out;
   }
 
   .form-header {
@@ -46,13 +49,21 @@ const HomePageStyled = styled.div`
 
     h2 {
       cursor: pointer;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid transparent;
+      padding: 0.5rem 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+      transition: color 0.3s ease, border-bottom 0.3s ease;
     }
 
     h2.active {
-      border-bottom: 2px solid #000;
+      border-bottom: 2px solid #007bff;
+      color: #007bff;
     }
+  }
+
+  .form-header h2:not(.active):hover {
+    color: #007bff;
   }
 `;
 

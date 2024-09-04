@@ -4,6 +4,7 @@ const express = require('express')
 // Import CORS middleware
 const cors = require('cors')
 // Import the database connection function from db module
+const cookieParser = require('cookie-parser');
 const { db } = require('./db/db')
 // Import readdirSync function from fs module to read the routes directory
 const { readdirSync } = require('fs')
@@ -19,7 +20,13 @@ const PORT = process.env.PORT
 // Middleware to parse JSON bodies
 app.use(express.json())
 // Middleware to enable CORS (Cross-Origin Resource Sharing)
-app.use(cors())
+// CORS configuration
+app.use(cors({
+    origin: 'http://localhost:5173', // Your frontend origin
+    credentials: true // Allow cookies to be sent
+}));
+  // Use cookie-parser middleware
+app.use(cookieParser());
 
 //routes
 // Dynamically read all files in the 'routes' directory and use them as routes

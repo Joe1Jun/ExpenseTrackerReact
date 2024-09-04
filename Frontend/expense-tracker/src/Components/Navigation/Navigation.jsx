@@ -3,11 +3,23 @@ import styled from 'styled-components'
 import avatar from '../../img/avatar.png'
 import { signout } from '../../utils/Icons'
 import { menuItems } from '../../utils/menuItems'
+import { useGlobalContext } from '../../context/globalContext'
 
 // Navigation component definition
 // Takes the active and setactive  as props
 function Navigation({ active, setActive }) {
     
+    const { user, logoutUser } = useGlobalContext();
+    
+    const handleLogout = async () => {
+        try {
+          await logoutUser(); // Call the logout function
+         
+        } catch (err) {
+            console.error(err); // Handle any errors
+            console.log(user);
+        }
+      };
     return (
         <NavStyled>
             {/* User information section */}
@@ -40,7 +52,10 @@ function Navigation({ active, setActive }) {
             {/* Bottom navigation section with sign out option */}
             <div className="bottom-nav">
                 <li>
+                    <button type='submit' onClick={handleLogout}>
                     {signout} Sign Out
+                    </button>
+                   
                 </li>
             </div>
         </NavStyled>

@@ -1,13 +1,18 @@
 // src/Components/Login/Login.jsx
 import React, { useState } from 'react';
 import { useGlobalContext } from "../../context/globalContext";
+import { useNavigate } from 'react-router-dom';
+import { FormContainer, InputControl, Button, Error } from '../../styles/Layouts';
 import styled from 'styled-components';
 
 
 function Login() {
-const { loginUser} = useGlobalContext();  
+  const { loginUser } = useGlobalContext();  
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
   const { email, password } = formData;
   const handleChange = (e) => {
@@ -15,24 +20,24 @@ const { loginUser} = useGlobalContext();
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add form submission logic here
-    loginUser(formData)
-    //reset input state  of form to be empty after item is added
-    setFormData({
+    setLoading(true);
+    setError('');
     
-    email: '',
-    password: '',
-   
-
-
-    })
+    try {
+      await loginUser(formData);
+      navigate('/dashboard'); // Navigate to the dashboard after successful login
+    } catch (err) {
+      setError('Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
   return (
-    <LoginStyled>
+    <FormContainer>
       <form onSubmit={handleSubmit}>
-        <div className="input-control">
+        <InputControl>
           <input
             type="email"
             name="email"
@@ -41,8 +46,8 @@ const { loginUser} = useGlobalContext();
             onChange={handleChange}
             required
           />
-        </div>
-        <div className="input-control">
+        </InputControl>
+        <InputControl>
           <input
             type="password"
             name="password"
@@ -51,24 +56,15 @@ const { loginUser} = useGlobalContext();
             onChange={handleChange}
             required
           />
-        </div>
-        {error && <p className="error">{error}</p>}
-        <div className="submit-btn">
-          <button type="submit">Login</button>
-        </div>
+        </InputControl>
+        {error && <Error>{error}</Error>}
+        <Button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login'}
+        </Button>
       </form>
-    </LoginStyled>
+    </FormContainer>
   );
 }
 
-const LoginStyled = styled.div`
-  .input-control {
-    margin-bottom: 1rem;
-  }
-  .error {
-    color: red;
-    margin-bottom: 1rem;
-  }
-`;
-
 export default Login;
+
