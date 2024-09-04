@@ -34,8 +34,9 @@ exports.registerUser = async (req, res) => {
     await newUser.save();
 
     // Respond with success
+    console.log("User created ")
     res.status(201).send({ message: 'User created successfully' });
-  } catch (error) {
+  } catch (error) {s
     console.error(error);
     res.status(500).send({ message: 'Internal server error' });
   }

@@ -33,6 +33,18 @@ export const GlobalProvider = ({ children }) => {
         }
          
      }
+     const loginUser = async (user) => {
+        
+        try {
+            const response = await axios.post(`${BASE_URL}login`, user);
+            console.log('User logged in')
+        } catch (error) {
+            console.error('Login error:', error.response ? error.response.data.message : error.message);
+            setError(error.response.data.message);
+            console.log(error)
+        }
+         
+     }
      // Function to add income by making a POST request to the server
      const addIncome = async (income) => {
         
@@ -114,7 +126,8 @@ const totalExpenses = () => {
     return (
         // Provide the global state and functions to the children components
         <GlobalContext.Provider value={{
-
+            addUser,
+            loginUser,
             addIncome,
             getIncomes,
             incomes,

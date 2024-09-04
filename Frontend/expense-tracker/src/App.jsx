@@ -1,10 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import { BrowserRouter as Router , Route, Routes, Navigate } from 'react-router-dom';
+import Register from './Components/Register/register';
+
 // Importing the background image from the local 'img' directory
 import bg from './img/bg.png'
 // Importing the MainLayout styled component
 import { MainLayout } from './styles/Layouts'
 //import the Orb component
+import HomePage from './Components/HomePage/HomePage';
 import Orb from './Components/Orb/Orb'
 import Navigation from './Components/Navigation/Navigation';
 import Dashboard from './Components/Dashboard/Dashboard';
@@ -44,24 +48,20 @@ function App() {
 
   }, [])
 
-// {orbMemo}: Inserts the memoized Orb component into JSX. Preserves Animations: Ensures that animations or component state are not reset on every render. 
-  return (
-    <AppStyled bg={bg} className="App">
-      
-      
-      {orbMemo}
-      <MainLayout>
-        {/* Render the Navigation component, passing active state and setActive function as props */}
-        <Navigation active={active} setActive={setActive} />
-        <main>
-          {displayData()}
-        </main>
-      </MainLayout>
-    </AppStyled>
-  );
 
+return (
+  <div>
+    <HomePage />
+  </div>
+);
 }
-// Define a styled component named AppStyled
+
+    
+
+
+
+
+  
 const AppStyled = styled.div`
     
   height: 100vh;
