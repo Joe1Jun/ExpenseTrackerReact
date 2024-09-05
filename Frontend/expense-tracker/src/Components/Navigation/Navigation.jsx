@@ -26,7 +26,7 @@ function Navigation({ active, setActive }) {
             <div className="user-con">
                 <img src={avatar} alt="" />
                 <div className="text">
-                    <h2>Joe</h2>
+                    <h2>{user.name }</h2>
                     <p>Your Money</p>
                 </div>
             </div>
@@ -52,7 +52,7 @@ function Navigation({ active, setActive }) {
             {/* Bottom navigation section with sign out option */}
             <div className="bottom-nav">
                 <li>
-                    <button type='submit' onClick={handleLogout}>
+                    <button className='btn' type='submit' onClick={handleLogout}>
                     {signout} Sign Out
                     </button>
                    
@@ -150,6 +150,20 @@ const NavStyled = styled.nav`
             border-radius: 0 10px 10px 0;            
        }
     }
+    .btn {
+    height: 30px;
+    cursor: pointer;
+    color: rgba(34, 34, 96, 1); /* Dark blue color for the text */
+    border: none;
+    background: rgba(252, 246, 249, 0.78); /* Semi-transparent background */
+    transition: background-color 0.3s ease; /* Smooth transition for the background color */
+}
+
+.btn:hover {
+   
+    color: #b73a3a; /* Change text color to white on hover */
+}
+    
 `;
 
 export default Navigation;

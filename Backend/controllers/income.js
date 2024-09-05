@@ -65,7 +65,7 @@ exports.getIncomes = async (req, res) => {
 exports.deleteIncome = async (req, res) => {
     // Extracting the id parameter from the request
     const { id } = req.params;
-    const user_id = req.user._id
+    const userId = req.user._id
     try {
         // Find the document by ID and delete it
         const income = await IncomeSchema.findByIdAndDelete({

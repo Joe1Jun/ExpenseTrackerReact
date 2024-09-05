@@ -70,7 +70,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             setError(error.response.data.message);
         }
-         getIncomes()
+         await getIncomes()
      }
     // Function to getincomes by making a get request to the server
     const getIncomes = async () => {
@@ -93,9 +93,15 @@ export const GlobalProvider = ({ children }) => {
 
     const deleteIncome = async (id) => {
         
-        const res = await axios.delete(`${BASE_URL}delete-income/:${id}`, { withCredentials: true });
-
-        await getIncomes()
+        try {
+            await axios.delete(`${BASE_URL}delete-income/${id}`, { withCredentials: true });
+            console.log('Income deleted successfully');
+            
+            await getIncomes()
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+            setError(error.response?.data?.message || 'Error deleting expense');
+        }
     }
     
     const totalIncome = () => {

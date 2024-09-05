@@ -84,7 +84,7 @@ function Form() {
                     }}
                 />
             </div>
-            <div className="selects input-control">
+            <div className="selects input-control ">
                 <select required value={category} name="category" id="category" onChange={handleInput('category')}>
                     <option value=""  disabled >Select Option</option>
                     <option value="salary">Salary</option>
@@ -147,7 +147,7 @@ const FormStyled = styled.form`
 
     .selects{
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-end center;
         select{
             color: rgba(34, 34, 96, 0.4);
             &:focus, &:active{
