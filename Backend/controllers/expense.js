@@ -65,19 +65,25 @@ exports.getExpense = async (req, res) => {
 exports.deleteExpense = async (req, res) => {
     // Extracting the id parameter from the request
     const { id } = req.params;
-    const user_id = req.user.id; // Get the user ID from the token
+    const userId = req.user._id; // Get the user ID from the authenticated user
+
     try {
-        // Find the document by ID and delete it
-        const expense = await ExpenseSchema.findOneAndDelete({ _id: id, user_id });
-        // If income is found its deleletd
-        if (expense) {
-            res.status(200).json({ message: `Expense with ID ${id} deleted` });
-        } else {
-            // If not found message with an error is outputted
-            res.status(404).json({ message: `Expense with ID ${id} not found` });
+        console.log(`Attempting to delete expense with id: ${id} for user: ${userId}`);
+
+        const expense = await ExpenseSchema.findOneAndDelete({
+            _id: id,
+            user: userId
+        });
+
+        if (!expense) {
+            console.log(`Expense not found with id: ${id} for user: ${userId}`);
+            return res.status(404).json({ message: 'Expense not found' });
         }
+
+        console.log(`Expense deleted successfully: ${id}`);
+        res.status(200).json({ message: 'Expense deleted successfully' });
     } catch (error) {
-        // Handling any errors that occur during the find and delete operation
-        res.status(500).json({ message: 'Error deleting expense record' });
+        console.error('Error deleting expense:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 }

@@ -22,7 +22,8 @@ exports.addIncome = async (req, res) => {
         amount,
         category,
         description,
-        date
+        date,
+        user: req.user._id // Set the user_id from the authenticated user
     });
 
     try {
@@ -41,7 +42,7 @@ exports.addIncome = async (req, res) => {
 // Function to get incomes
 exports.getIncomes = async (req, res) => {
     
-
+    const user_id = req.user.id; // Get the user ID from the token
     try {
     // Set the sort order to -1 (descending)
     // -1 with mongoDB sorts in descending order . 1  sorts in ascending order.    
@@ -50,7 +51,7 @@ exports.getIncomes = async (req, res) => {
         // CreatedAt field using the date to sort the results in descending order
         // The sort method uses different sorting algorithms depending on type of data and environment in which it operates.
         // equivalent in mySql SELECT * FROM users ORDER BY createdAt DESC;
-        const incomes = await IncomeSchema.find().sort({createdAt: sortOrder})
+        const incomes = await IncomeSchema.find({ user: req.user._id } ).sort({createdAt: sortOrder})
         // Send the retrieved income entries as a JSON response with a 200 status code
         res.status(200).json(incomes)
 
@@ -64,18 +65,22 @@ exports.getIncomes = async (req, res) => {
 exports.deleteIncome = async (req, res) => {
     // Extracting the id parameter from the request
     const { id } = req.params;
+    const user_id = req.user._id
     try {
         // Find the document by ID and delete it
-        const income = await IncomeSchema.findByIdAndDelete(id);
-        // If income is found its deleletd
-        if (income) {
-            res.status(200).json({ message: `Income with ID ${id} deleted` });
-        } else {
-            // If not found message with an error is outputted
-            res.status(404).json({ message: `Income with ID ${id} not found` });
+        const income = await IncomeSchema.findByIdAndDelete({
+            _id: id,
+            user: userId
+        });
+        if (!income) {
+            console.log(`Income not found with id: ${id} for user: ${userId}`);
+            return res.status(404).json({ message: 'Income not found' });
         }
+
+        console.log(`Income deleted successfully: ${id}`);
+        res.status(200).json({ message: 'Income deleted successfully' });
     } catch (error) {
-        // Handling any errors that occur during the find and delete operation
-        res.status(500).json({ message: 'Error deleting income record' });
+        console.error('Error deleting income:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 }

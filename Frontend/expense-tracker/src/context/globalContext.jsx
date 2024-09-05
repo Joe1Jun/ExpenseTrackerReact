@@ -65,7 +65,7 @@ export const GlobalProvider = ({ children }) => {
      const addIncome = async (income) => {
         
         try {
-            const response = await axios.post(`${BASE_URL}add-income`, income);
+            const response = await axios.post(`${BASE_URL}add-income`, income, { withCredentials: true });
             console.log('Income added')
         } catch (error) {
             setError(error.response.data.message);
@@ -78,7 +78,7 @@ export const GlobalProvider = ({ children }) => {
         try { 
 
             // The URL is constructed using the BASE_URL constant and the 'get-incomes' endpoint.
-            const response = await axios.get(`${BASE_URL}get-incomes`)
+            const response = await axios.get(`${BASE_URL}get-incomes`, { withCredentials: true })
             // If the request is successful, store the received data in the 'incomes' state variable.
             setIncomes(response.data)
             console.log(response.data)
@@ -93,9 +93,9 @@ export const GlobalProvider = ({ children }) => {
 
     const deleteIncome = async (id) => {
         
-        const res = await axios.delete(`${BASE_URL}delete-income/${id}`);
+        const res = await axios.delete(`${BASE_URL}delete-income/:${id}`, { withCredentials: true });
 
-        getIncomes()
+        await getIncomes()
     }
     
     const totalIncome = () => {
@@ -129,10 +129,17 @@ export const GlobalProvider = ({ children }) => {
         }
     };
 
-const deleteExpense = async (id) => {
-    const res  = await axios.delete(`${BASE_URL}delete-expense/${id}`)
-    getExpenses()
-}
+    const deleteExpense = async (id) => {
+        try {
+            await axios.delete(`${BASE_URL}delete-expense/${id}`, { withCredentials: true });
+            console.log('Expense deleted successfully');
+            
+            await getExpenses(); // Refresh the expenses after deleting
+        } catch (error) {
+            console.error('Error deleting expense:', error);
+            setError(error.response?.data?.message || 'Error deleting expense');
+        }
+    }
 
 const totalExpenses = () => {
     let totalIncome = 0;
