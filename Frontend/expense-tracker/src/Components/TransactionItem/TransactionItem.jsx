@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components'
 import { dateFormat } from "../../utils/dateFormat";
 import {bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt} from '../../utils/Icons'
-import Button from "../Button/Button";
+import DeleteItemButton from "../DeleteItemButton/DeleteItemButton";
 
 
 // These are the props passes from either the expenses or incomes components
@@ -19,7 +19,10 @@ function TransactionItem({
 
 }) {
 
-
+//The switch blocks switch on the category prop  being passed to this component.  
+// When the getIcon method is called if the prop type is == to expense or income  the category is passed through the switch block and 
+// returned to the div container that called it.
+  // trimmed and put category to lowercase incase any issues with input.
     const normalizedCategory = category.trim().toLowerCase();
     const getIcon = () => {
         if (type === 'Expense') {
@@ -94,20 +97,12 @@ function TransactionItem({
                             {description}
                         </p>
                     </div>
-                    <div className="btn-con">
-                        <Button
-                            icon={trash}
-                            bPad={'1rem'}
-                            bRad={'50%'}
-                            bg={'var(--primary-color'}
-                            color={'#fff'}
-                            iColor={'#fff'}
-                            hColor={'var(--color-green)'}
-                            onClick= {() => deleteItem(id)}
-                            
-                        
-                        
-                        />
+            <div className="btn-con">
+              {/* The DeleteItemButton component calls the deleteItem method passed as a prop from either incomes or expenses componenets 
+              //  and adds the current item id also passed as prop as the argument
+              //  This method is either the deleteIncome or deleteExpense method that is in the global context
+              //  deleteitem will change depending on which component the prop is being passed from.  */}
+               <DeleteItemButton onClick={() => deleteItem(id)} />
                     </div>
                 </div>
             </div>
