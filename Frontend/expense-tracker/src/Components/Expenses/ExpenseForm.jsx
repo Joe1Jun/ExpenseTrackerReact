@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+// Import date picker to access the date calender
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
+// import global context to access the methods from there
 import { useGlobalContext } from '../../context/globalContext';
+// import the style button componenet for use in the forms
 import Button from '../Button/Button';
+// import the icon plus
 import { plus } from '../../utils/Icons';
 
 
+// This function handles the user input when adding an expense.
 function ExpenseForm() {
-    const {addExpense, error, setError} = useGlobalContext()
+    // import addExpense , error and setError methods from global context
+    const { addExpense, error, setError } = useGlobalContext()
+    // Use use state to originally set the state with all the input set to empty strings.
     const [inputState, setInputState] = useState({
         title: '',
         amount: '',
@@ -16,9 +23,10 @@ function ExpenseForm() {
         category: '',
         description: '',
     })
-
+// This destructures the input state  so the objects can be used throughout the form as the value objects.
     const { title, amount, date, category,description } = inputState;
-
+     // This method handles the input of the user
+    //
     const handleInput = name => e => {
         setInputState({...inputState, [name]: e.target.value})
         
@@ -86,7 +94,7 @@ function ExpenseForm() {
             </div>
             <div className="submit-btn">
                 <Button 
-                    name={'Add Expense'}
+                    name={'Add Income'}
                     icon={plus}
                     bPad={'.8rem 1.6rem'}
                     bRad={'30px'}
@@ -94,6 +102,7 @@ function ExpenseForm() {
                     color={'#fff'}
                 />
             </div>
+    
         </ExpenseFormStyled>
     )
 }

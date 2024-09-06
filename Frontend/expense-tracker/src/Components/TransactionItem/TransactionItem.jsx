@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components'
 import { dateFormat } from "../../utils/dateFormat";
 import {bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt} from '../../utils/Icons'
-import DeleteItemButton from "../DeleteItemButton/DeleteItemButton";
+import Button from '../Button/Button';
 
 
 // These are the props passes from either the expenses or incomes components
@@ -80,9 +80,11 @@ function TransactionItem({
   // on the values passed from the components 
   // As each item is looped through and accessed one at a time the value attached to the props are unique to each
     return (
-    
+    // indicatorcolor  is passed as a prop to be used by the styled components
+    // The reason this is not hard coded is to allow for more flexibility for future refactoring.  
     <TransactionItemItemStyled indicator = { indicatorColor } >
-            
+            {/* All the props that have been passed from parent are used here to display the data 
+                for the current item being looped through   */}
             <div className="icons">
                  {getIcon()}
             </div>
@@ -102,7 +104,19 @@ function TransactionItem({
               //  and adds the current item id also passed as prop as the argument
               //  This method is either the deleteIncome or deleteExpense method that is in the global context
               //  deleteitem will change depending on which component the prop is being passed from.  */}
-               <DeleteItemButton onClick={() => deleteItem(id)} />
+              <Button
+                            icon={trash}
+                            bPad={'1rem'}
+                            bRad={'50%'}
+                            bg={'var(--primary-color'}
+                            color={'#fff'}
+                            iColor={'#fff'}
+                            hColor={'var(--color-green)'}
+                            onClick= {() => deleteItem(id)}
+
+
+
+                        />
                     </div>
                 </div>
             </div>

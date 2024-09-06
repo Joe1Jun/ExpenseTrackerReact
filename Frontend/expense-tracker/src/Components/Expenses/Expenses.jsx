@@ -13,7 +13,7 @@ import ExpenseForm from './ExpenseForm';
 // This function The `Expenses` function is a React component that manages and displays a list of expenses. It fetches expenses from a global context on mount and displays them along with a form to add new expenses.
 function Expenses() {
     // All the necessary objects, arrays and methods are destructured from the globalContext for use on the Expense Page.
-    const {addExpense, expenses, getExpenses, deleteExpense, totalExpenses} = useGlobalContext()
+    const {expenses, getExpenses, deleteExpense, totalExpenses} = useGlobalContext()
 // Calls `getExpenses` on component mount using `useEffect`.
     useEffect(() =>{
         getExpenses()
@@ -32,7 +32,11 @@ function Expenses() {
                     </div>
                     <div className="incomes">
                         {/* Here the expenses set in globalContext and imported for use in this component are mapped over 
-                            Each expense object in the array is destructured and these values are passes through props to the  */}
+                            Each expense object in the array is destructured and these values are passes through props to the TransactionItem component
+                            This component will use these props to create each individual transaction item.
+                            The transaction item will be used for both the income and expenses pages
+                            Below the TransactionItem is inside the loop and therfore will render a different item each time
+                            as the different values from the props are passed to it  */}
                         {expenses.map((expense) => {
                             const {_id, title, amount, date, category, description, type} = expense;
                             console.log(expense)
@@ -46,7 +50,7 @@ function Expenses() {
                                 type={type}
                                 category={category} 
                                 indicatorColor="var(--color-green)"
-                                deleteItem={deleteExpense}
+                                 deleteItem={deleteExpense}
                             />
                         })}
                     </div>
