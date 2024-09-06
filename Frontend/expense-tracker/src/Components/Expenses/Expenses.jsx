@@ -1,31 +1,42 @@
+
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
+// This imports global context so the methods can be accessed
 import { useGlobalContext } from '../../context/globalContext';
+// Import inner layout from styles
 import { InnerLayout } from '../../styles/Layouts';
-
-import IncomeItem from '../IncomeItem/IncomeItem';
+// Import the Transaction item which will display the expense items
+import TransactionItem from '../TransactionItem/TransactionItem';
+// import the expense form where the user enter the expense information
 import ExpenseForm from './ExpenseForm';
 
+// This function The `Expenses` function is a React component that manages and displays a list of expenses. It fetches expenses from a global context on mount and displays them along with a form to add new expenses.
 function Expenses() {
+    // All the necessary objects, arrays and methods are destructured from the globalContext for use on the Expense Page.
     const {addExpense, expenses, getExpenses, deleteExpense, totalExpenses} = useGlobalContext()
-
+// Calls `getExpenses` on component mount using `useEffect`.
     useEffect(() =>{
         getExpenses()
     }, [])
     return (
+//Everything is containe inside the ExpenseStyled component that is styled on this page 
+        // Inner Layout is imported from layouts and styles and has very basic style for the inner part of the page.
         <ExpenseStyled>
             <InnerLayout>
                 <h1>Expenses</h1>
+                {/* The total expenses function is called to display the total expenses in the UI*/}
                 <h2 className="total-income">Total Expenses: <span>${totalExpenses()}</span></h2>
                 <div className="income-content">
                     <div className="form-container">
                         <ExpenseForm />
                     </div>
                     <div className="incomes">
+                        {/* Here the expenses set in globalContext and imported for use in this component are mapped over 
+                            Each expense object in the array is destructured and these values are passes through props to the  */}
                         {expenses.map((expense) => {
                             const {_id, title, amount, date, category, description, type} = expense;
                             console.log(expense)
-                            return <IncomeItem
+                            return <TransactionItem
                                 key={_id}
                                 id={_id} 
                                 title={title} 

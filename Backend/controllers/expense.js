@@ -42,7 +42,7 @@ exports.addExpense = async (req, res) => {
 // Function to get incomes
 exports.getExpense = async (req, res) => {
     
-    const user_id = req.user.id; // Get the user ID from the token
+    const userId = req.user._id; // Get the user ID from the token that has been verified by the middleware
     try {
     // Set the sort order to -1 (descending)
     // -1 with mongoDB sorts in descending order . 1  sorts in ascending order.    
@@ -51,7 +51,7 @@ exports.getExpense = async (req, res) => {
         // CreatedAt field using the date to sort the results in descending order
         // The sort method uses different sorting algorithms depending on type of data and environment in which it operates.
         // equivalent in mySql SELECT * FROM users ORDER BY createdAt DESC;
-        const expenses = await ExpenseSchema.find({ user: req.user._id }).sort({createdAt: sortOrder})
+        const expenses = await ExpenseSchema.find({ user: userId }).sort({createdAt: sortOrder})
         // Send the retrieved income entries as a JSON response with a 200 status code
         res.status(200).json(expenses)
 
@@ -65,7 +65,7 @@ exports.getExpense = async (req, res) => {
 exports.deleteExpense = async (req, res) => {
     // Extracting the id parameter from the request
     const { id } = req.params;
-    const userId = req.user._id; // Get the user ID from the authenticated user
+    const userId = req.user._id; // Get the user ID from verified by the middleware
 
     try {
         console.log(`Attempting to delete expense with id: ${id} for user: ${userId}`);

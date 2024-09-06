@@ -4,7 +4,9 @@ import { dateFormat } from "../../utils/dateFormat";
 import {bitcoin, book, calender, card, circle, clothing, comment, dollar, food, freelance, medical, money, piggy, stocks, takeaway, trash, tv, users, yt} from '../../utils/Icons'
 import Button from "../Button/Button";
 
-function IncomeItem({
+
+// These are the props passes from either the expenses or incomes components
+function TransactionItem({
     id,
     title,
     amount,
@@ -71,10 +73,12 @@ function IncomeItem({
     
     console.log('Type:', type);
     console.log('Category:', category);    
-    
+    // Throughout the return function the props are accessed which have values based
+  // on the values passed from the components 
+  // As each item is looped through and accessed one at a time the value attached to the props are unique to each
     return (
     
-        <IncomeItemStyled indicator={indicatorColor}>
+    <TransactionItemItemStyled indicator = { indicatorColor } >
             
             <div className="icons">
                  {getIcon()}
@@ -107,7 +111,7 @@ function IncomeItem({
                     </div>
                 </div>
             </div>
-       </IncomeItemStyled>
+       </TransactionItemItemStyled>
 )
 
 
@@ -115,7 +119,7 @@ function IncomeItem({
 
 }
 
-const IncomeItemStyled = styled.div`
+const TransactionItemItemStyled = styled.div`
 
 
 background: #FCF6F9;
@@ -187,4 +191,4 @@ color: #222260;
 
 `;
 
-export default IncomeItem
+export default TransactionItem

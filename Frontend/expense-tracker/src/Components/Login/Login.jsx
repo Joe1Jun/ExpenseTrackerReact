@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useGlobalContext } from "../../context/globalContext";
 import { useNavigate } from 'react-router-dom';
 import { FormContainer, InputControl, Button, Error } from '../../styles/Layouts';
-import styled from 'styled-components';
+
 
 
 function Login() {
@@ -27,12 +27,13 @@ function Login() {
     
     try {
       await loginUser(formData);
-      navigate('/dashboard'); // Navigate to the dashboard after successful login
-    } catch (err) {
-      setError('Login failed. Please try again.');
-    } finally {
+      navigate('/dashboard');
+  } catch (err) {
+      console.log('Error caught in handleSubmit:', err);
+      setError(err.message || 'Login failed. Please try again.');
+  } finally {
       setLoading(false);
-    }
+  }
   };
   return (
     <FormContainer>

@@ -37,17 +37,20 @@ export const GlobalProvider = ({ children }) => {
         }
       };
       
-     const loginUser = async (user) => {
+      const loginUser = async (user) => {
         try {
             const response = await axios.post(`${BASE_URL}login`, user, { withCredentials: true });
             // Update user state only after successful login
             setUser(response.data.user);
             console.log('User logged in');
+            return response.data; // Ensure you return the response data or any relevant data
         } catch (error) {
             console.error('Login error:', error.response ? error.response.data.message : error.message);
-            setError(error.response.data.message);
+    
+            // You may want to throw the error to be handled by the calling function
+            throw new Error(error.response ? error.response.data.message : error.message);
         }
-    }
+    };
     
     
      const logoutUser = async () => {
@@ -155,6 +158,12 @@ const totalExpenses = () => {
 
     return totalIncome;
 }
+    
+    const totalBalance = () =>{
+        let totalBalance = totalIncome() - totalExpenses()
+        
+        return totalBalance
+    }
 
     
     console.log("total:" + totalIncome());
@@ -175,7 +184,8 @@ const totalExpenses = () => {
             getExpenses,
             expenses,
             deleteExpense,
-            totalExpenses
+            totalExpenses,
+            totalBalance
 
         }}>
          

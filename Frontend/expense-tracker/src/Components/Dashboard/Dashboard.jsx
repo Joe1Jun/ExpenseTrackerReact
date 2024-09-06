@@ -9,7 +9,7 @@ import Chart from '../Chart/Chart';
 
 function Dashboard() {
 
-    const{totalIncome, totalExpenses} = useGlobalContext()
+    const{totalIncome, totalExpenses, totalBalance} = useGlobalContext()
 
     return (
         
@@ -21,7 +21,7 @@ function Dashboard() {
                         <Chart />
                         <div className="amount-con">
                             <div className="income">
-                                <h2>TotaL Income</h2>
+                                <h2>Total Income</h2>
                                 <p>{dollar} {totalIncome() }</p>
                             </div>
                             <div className="expense">
@@ -29,7 +29,8 @@ function Dashboard() {
                                 <p>{dollar} {totalExpenses()}</p>
                             </div>
                             <div className="balance">
-                            <h2>Total Balance</h2>
+                                <h2>Total Balance</h2>
+                                <p>{dollar} {totalBalance()}</p>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useGlobalContext } from "../../context/globalContext";
 import { InnerLayout } from "../../styles/Layouts";
 import Form from '../Form/Form';
-import IncomeItem from "../IncomeItem/IncomeItem";
+import TranscationItem from '../TransactionItem/TransactionItem'
 
 function Income() {
     const { addIncome, incomes, getIncomes, deleteIncome, totalIncome } = useGlobalContext();
@@ -26,7 +26,7 @@ function Income() {
                         {incomes.map((income) => {
                             const { _id, title, amount, date, category, type, description } = income; 
                             return (
-                                <IncomeItem
+                                <TranscationItem
                                     key={_id}
                                     id={_id}
                                     title={title}

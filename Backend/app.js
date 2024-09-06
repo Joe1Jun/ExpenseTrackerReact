@@ -20,12 +20,24 @@ const PORT = process.env.PORT
 // Middleware to parse JSON bodies
 app.use(express.json())
 // Middleware to enable CORS (Cross-Origin Resource Sharing)
-// CORS configuration
+// Cors allows connection between the frontend and backend
+// Its necessary when the front and back end are hosted on seperate domains.
 app.use(cors({
-    origin: 'http://localhost:5173', // Your frontend origin
-    credentials: true // Allow cookies to be sent
-}));
-  // Use cookie-parser middleware
+    // This is the front end url origin 
+    //This specifies that only requests from this origin are allowed. 
+    // Will be replaced with the front end production URL when deployed
+    origin: process.env.FRONTEND_URL,
+    //Allows cookies to be sent 
+    // These cookies are sent taken from the front end browser and can be accessed in the verifyToken
+    // middleware which uses req.cookie to access the cookies and decodes the user id to be used by the methods.
+    // Without the cookie these methods would not be user specific.
+    credentials: true
+}))
+//cookie-parser is a middleware that parses cookies attached to the client request object. 
+//It populates req.cookies with an object keyed by cookie names.
+//This makes it easy to access cookie values in the route handlers and middleware.
+// Without cookie-parser, req.cookies would not be populated with cookies from the client request. 
+// This middleware relies on cookie - parser to extract and decode the JWT token.
 app.use(cookieParser());
 
 //routes
