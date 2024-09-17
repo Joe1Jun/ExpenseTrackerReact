@@ -1,34 +1,39 @@
-Income and Expenses Tracker using MERN stack.
+# Expenses Tracker
 
-Overview:
-The Income and Expenses Tracker is a web-based application that enables users to track their financial transactions. It offers secure authentication, dynamic data visualization, and personal financial management, providing users with clear insights into their incomes and expenses.
+This web application allows users to track their income and expenses. It features user authentication, data visualization, and secure access to personal financial data.
 
-How to Run:
+## Key Features
 
-1.Clone & Install: Clone the repository and install dependencies by running npm install in both the root and client directories.
+- User registration and login with JWT authentication.
+- Add, view, and delete income and expense entries.
+- Visualize income and expenses using Chart.js.
+- User-specific data with secure access.
+- JWT stored in HTTP-only cookies for enhanced security.
 
-2.Set Environment Variables: Configure backend environment variables in a .env file.
+## Technologies Used
 
-3.Run the Application: Start the backend with npm start and the frontend with npm run dev.
+- **Backend:** Node.js with Express.js
+- **Database:** MongoDB with Mongoose
+- **Authentication:** JWT
+- **Password Hashing:** bcrypt.js
+- **Frontend:** React
+- **Data Visualization:** Chart.js
+- **Styling:** Styled Components
 
-Features:
+## Setup
 
-• User Authentication: Secure registration and login using JWT authentication.
+1. **Install Dependencies:**
+   - Navigate to both the root and client directories.
+   - Run `npm install` to install the required dependencies.
 
-•Transaction Management: Users can add, view, and delete income and expense records.
+2. **Start the Servers:**
+   - Run `npm start` in the root directory to start the backend server.
+   - Run `npm run dev` in the client directory to start the frontend server.
 
-•Data Visualization: Visualize incomes and expenses with Chart.js for clear financial tracking.
-
-•User-Specific Data: Each user has secure access to their own financial records.
-
-•Secure Cookies: JWTs are stored in HTTP-only cookies for enhanced security.
+Ensure to configure your environment variables as specified in the `.env` file for the backend.
 
 
-Technologies Used:
 
-Backend: Node.js, Express.js, MongoDB, Mongoose, JWT for authentication, bcrypt.js for password hashing.
-
-Frontend: React, Chart.js for data visualization, Styled Components for styling.
 
 
 
