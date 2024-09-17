@@ -1,45 +1,34 @@
-Income and Expenses Tracker
+Income and Expenses Tracker using MERN stack.
 
-This is a web application that allows users to track their income and expenses. It supports user authentication, data visualization, and secure access to personal financial data.
+Overview:
+The Income and Expenses Tracker is a web-based application that enables users to track their financial transactions. It offers secure authentication, dynamic data visualization, and personal financial management, providing users with clear insights into their incomes and expenses.
 
-Key Features
+How to Run:
 
-User registration and login with JWT authentication.
+1.Clone & Install: Clone the repository and install dependencies by running npm install in both the root and client directories.
 
-Add, view, and delete income and expense entries.
+2.Set Environment Variables: Configure backend environment variables in a .env file.
 
-Visualize income and expenses using Chart.js.
+3.Run the Application: Start the backend with npm start and the frontend with npm run dev.
 
-User-specific data with secure access.
+Features:
 
-JWT stored in HTTP-only cookies for enhanced security.
+• User Authentication: Secure registration and login using JWT authentication.
+
+•Transaction Management: Users can add, view, and delete income and expense records.
+
+•Data Visualization: Visualize incomes and expenses with Chart.js for clear financial tracking.
+
+•User-Specific Data: Each user has secure access to their own financial records.
+
+•Secure Cookies: JWTs are stored in HTTP-only cookies for enhanced security.
 
 
-Technologies Used
+Technologies Used:
 
-Backend
-Node.js with Express.js
+Backend: Node.js, Express.js, MongoDB, Mongoose, JWT for authentication, bcrypt.js for password hashing.
 
-MongoDB and Mongoose for the database
+Frontend: React, Chart.js for data visualization, Styled Components for styling.
 
-JWT for authentication
 
-bcrypt.js for password hashing
 
-Frontend
-
-React for the UI
-
-Chart.js for data visualization
-
-Styled Components for styling
-
-Setup Instructions
-
-Clone the repository.
-
-Install dependencies using npm install in both the root and the client folder.
-
-Set up environment variables for the backend in a .env file.
-
-Run the backend server with npm start and the frontend with npm run dev.
